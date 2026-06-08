@@ -1,0 +1,2 @@
+solmate-sdk==0.1.11
+paho-mqtt>=2.0.0

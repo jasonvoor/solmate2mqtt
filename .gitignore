@@ -1,0 +1,19 @@
+# Maintainer-only notes (not shipped to end users)
+POSTING.md
+
+# Secrets / local config
+.env
+mosquitto/mosquitto.conf
+mosquitto/data/
+mosquitto/log/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/

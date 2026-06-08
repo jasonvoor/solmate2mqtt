@@ -1,0 +1,46 @@
+# solmate2mqtt — EET SolMate (sun2plug) → MQTT bridge for Home Assistant
+#
+# Quick start:
+#   1. cp .env.example .env   and fill in your SolMate + MQTT details
+#   2. docker compose up -d --build
+#   3. The battery's sensors appear in Home Assistant via MQTT discovery.
+#
+# By default this connects to an MQTT broker you already run (e.g. the
+# Mosquitto add-on inside Home Assistant). If you DON'T have a broker yet,
+# uncomment the `mosquitto` service block at the bottom and set
+# MQTT_HOST=mosquitto in your .env.
+
+services:
+  solmate2mqtt:
+    build: ./bridge
+    image: solmate2mqtt:local
+    container_name: solmate2mqtt
+    restart: unless-stopped
+    env_file: .env
+    # If you uncomment the bundled mosquitto below, also uncomment this so the
+    # bridge waits for the broker to start:
+    # depends_on:
+    #   - mosquitto
+
+  # ---------------------------------------------------------------------------
+  # OPTIONAL bundled broker — uncomment if you do NOT already have an MQTT
+  # broker. Then set MQTT_HOST=mosquitto in your .env. Home Assistant must also
+  # be pointed at this broker (host = the Docker host's IP, port 1883).
+  #
+  # The example config below allows anonymous connections for a quick start —
+  # tighten it (password_file / TLS) before exposing it beyond localhost.
+  # ---------------------------------------------------------------------------
+  # mosquitto:
+  #   image: eclipse-mosquitto:2
+  #   container_name: solmate2mqtt-mosquitto
+  #   restart: unless-stopped
+  #   ports:
+  #     - "1883:1883"
+  #   volumes:
+  #     - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+  #     - mosquitto-data:/mosquitto/data
+  #     - mosquitto-log:/mosquitto/log
+
+# volumes:
+#   mosquitto-data:
+#   mosquitto-log:
