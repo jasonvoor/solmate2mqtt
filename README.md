@@ -28,9 +28,15 @@ A single device, **EET SolMate**, with these entities (created automatically):
 | `sensor.solmate_battery_state` | % | battery |
 | `sensor.solmate_temperature` | °C | temperature |
 
-All are `state_class: measurement`, so they work in the Energy dashboard,
-history, and statistics out of the box. An availability topic marks them
-*unavailable* when the bridge can't reach your SolMate.
+All are `state_class: measurement`, so they're recorded in **History** and
+**long-term statistics** automatically and can be dropped onto any dashboard
+card. An availability indicator marks them *unavailable* when the bridge can't
+reach your SolMate.
+
+> ℹ️ These are **live** readings (watts / percent / °C). Home Assistant's
+> **Energy dashboard** needs cumulative energy totals in **kWh**, which this
+> bridge doesn't produce yet — so use normal dashboard cards and History for
+> now, not the Energy dashboard.
 
 ---
 
@@ -112,6 +118,33 @@ This repo ships an **optional** Mosquitto service, commented out by default.
 
 The example Mosquitto config allows **anonymous** connections for a fast start —
 add a `password_file` and/or TLS before exposing it to anything but your LAN.
+
+---
+
+## Seeing the data in Home Assistant (no coding)
+
+Once the bridge is running, Home Assistant adds everything for you. To find and
+use the readings:
+
+1. **Check the device is there.** Go to **Settings → Devices & Services →
+   Devices** and search for **EET SolMate**. Click it — you'll see the five
+   sensors (PV Power, Inject Power, Battery Flow, Battery State, Temperature)
+   with live numbers. *(Nothing there? See [Troubleshooting](#troubleshooting).)*
+
+2. **Add them to a dashboard.** Open any dashboard → click the pencil ✏️
+   (top-right) to edit → **+ Add Card** → choose **Entities** (or **Gauge** for
+   a single value) → type *solmate* in the entity search and pick the sensors
+   you want → **Save**. That's it — the card now updates live.
+
+   *Shortcut:* on the device page from step 1, click **Add to dashboard** to drop
+   all five sensors onto a dashboard in one go.
+
+3. **See history / graphs.** Click any sensor and switch to the **History** tab,
+   or add a **History** card the same way as step 2. Home Assistant keeps the
+   long-term trend automatically — no setup needed.
+
+That covers it for most people. The sections below are reference material you
+only need if you want to change defaults or tinker.
 
 ---
 
